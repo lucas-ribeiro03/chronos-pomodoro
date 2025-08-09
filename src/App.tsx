@@ -4,6 +4,7 @@ import Container from "./components/Container";
 import Logo from "./components/Logo";
 import Menu from "./components/Menu";
 import Countdown from "./components/Countdown";
+import Input from "./components/Input";
 
 function App() {
   return (
@@ -16,6 +17,14 @@ function App() {
       </Container>
       <Container>
         <Countdown />
+      </Container>
+      <Container>
+        <Input
+          id="input"
+          type="text"
+          labelText="task"
+          placeholder="Digite a tarefa"
+        />
       </Container>
     </>
   );
