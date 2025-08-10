@@ -18,14 +18,14 @@ function App() {
       <Container>
         <Countdown />
       </Container>
-      <Container>
+      <form className="form">
         <Input
           id="input"
           type="text"
           labelText="task"
           placeholder="Digite a tarefa"
         />
-      </Container>
+      </form>
     </>
   );
 }
