@@ -1,6 +1,8 @@
+import { useRef } from "react";
 import Input from "../Input";
 
 const MainForm = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     <form className="form">
       <div className="formRow">
@@ -9,6 +11,7 @@ const MainForm = () => {
           type="text"
           labelText="task"
           placeholder="Digite a tarefa"
+          ref={inputRef}
         />
       </div>
       <div className="formRow">
