@@ -24,7 +24,7 @@ const MainForm = () => {
     const newTask: TaskModel = {
       id: Date.now().toString(),
       name: taskName,
-      duration: 1,
+      duration: state.config[nextCycleType],
       startDate: Date.now(),
       completeDate: null,
       interruptDate: null,
