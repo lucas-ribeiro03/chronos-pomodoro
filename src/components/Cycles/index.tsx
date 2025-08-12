@@ -8,7 +8,7 @@ const Cycles = () => {
   const cycleSteps = Array.from({ length: state.currentCycle });
 
   return (
-    <div>
+    <div className={styles.cycles}>
       <p>Ciclos</p>
       <div className={styles.cycleDots}>
         {cycleSteps.map((_, index) => {
@@ -18,7 +18,7 @@ const Cycles = () => {
           return (
             <span
               key={`${nextCycleType}_${nextCycle}`}
-              className={`${styles.cycle} ${styles[nextCycleType]}`}
+              className={`${styles.cycleDot} ${styles[nextCycleType]}`}
               title={`indicador de ${nextCycleType}`}
             ></span>
           );
