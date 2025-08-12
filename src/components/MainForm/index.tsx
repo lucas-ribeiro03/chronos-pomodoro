@@ -5,6 +5,7 @@ import type { TaskModel } from "../../models/TaskModel";
 import { getNextCycle } from "../../utils/getNextCycle";
 import { getNextCycleType } from "../../utils/getNextCycleType";
 import { secondsToMinutes } from "../../utils/secondsToMinutes";
+import Cycles from "../Cycles";
 
 const MainForm = () => {
   const taskNameInput = useRef<HTMLInputElement>(null);
@@ -65,6 +66,7 @@ const MainForm = () => {
           Nesse ciclo <strong>foque</strong>por <strong>25 min.</strong>
         </span>
       </div>
+      <div className="formRow">{state.activeTask && <Cycles />}</div>
       <div className="formRow">
         <button>botao</button>
       </div>
