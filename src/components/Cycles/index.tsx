@@ -1,13 +1,29 @@
-import { useState } from "react";
 import styles from "./styles.module.css";
+import { useTaskContext } from "../../context/TaskContext/useTaskContext";
+import { getNextCycle } from "../../utils/getNextCycle";
+import { getNextCycleType } from "../../utils/getNextCycleType";
 
 const Cycles = () => {
-  const [cycle, setCyle] = useState();
+  const { state } = useTaskContext();
+  const cycleSteps = Array.from({ length: state.currentCycle });
 
   return (
     <div>
       <p>Ciclos</p>
-      <div className={styles.cicleDots}>.{styles.dots}</div>
+      <div className={styles.cycleDots}>
+        {cycleSteps.map((_, index) => {
+          const nextCycle = getNextCycle(index);
+          const nextCycleType = getNextCycleType(nextCycle);
+
+          return (
+            <span
+              key={`${nextCycleType}_${nextCycle}`}
+              className={`${styles.cycle} ${styles[nextCycleType]}`}
+              title={`indicador de ${nextCycleType}`}
+            ></span>
+          );
+        })}
+      </div>
     </div>
   );
 };
