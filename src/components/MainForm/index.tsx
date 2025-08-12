@@ -2,14 +2,19 @@ import { useRef } from "react";
 import Input from "../Input";
 import { useTaskContext } from "../../context/TaskContext/useTaskContext";
 import type { TaskModel } from "../../models/TaskModel";
+import { getNextCycle } from "../../utils/getNextCycle";
+import { getNextCycleType } from "../../utils/getNextCycleType";
 
 const MainForm = () => {
   const taskNameInput = useRef<HTMLInputElement>(null);
 
-  const { setState } = useTaskContext();
+  const { setState, state } = useTaskContext();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const nextCycle = getNextCycle(state.currentCycle);
+    const nextCycleType = getNextCycleType(state.currentCycle);
 
     if (!taskNameInput.current) return alert("Insira uma tarefa");
     const taskName = taskNameInput.current.value.trim();
@@ -23,7 +28,7 @@ const MainForm = () => {
       startDate: Date.now(),
       completeDate: null,
       interruptDate: null,
-      type: "workTime",
+      type: nextCycleType,
     };
 
     const secondsRemaining = newTask.duration * 60;
@@ -32,7 +37,7 @@ const MainForm = () => {
       return {
         ...prev,
         activeTask: newTask,
-        currentCycle: 1,
+        currentCycle: nextCycle,
         secondsRemaining,
         formattedSecondsRemaining: "00:00",
         tasks: [...prev.tasks, newTask],
