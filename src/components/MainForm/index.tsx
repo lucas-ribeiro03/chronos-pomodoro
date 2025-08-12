@@ -15,7 +15,9 @@ const MainForm = () => {
     e.preventDefault();
 
     const nextCycle = getNextCycle(state.currentCycle);
-    const nextCycleType = getNextCycleType(state.currentCycle);
+    const nextCycleType = getNextCycleType(nextCycle);
+
+    console.log(nextCycle);
 
     if (!taskNameInput.current) return alert("Insira uma tarefa");
     const taskName = taskNameInput.current.value.trim();
@@ -33,7 +35,6 @@ const MainForm = () => {
     };
 
     const secondsRemaining = newTask.duration * 60;
-    const formattedMinutes = secondsToMinutes(secondsRemaining);
 
     setState((prev) => {
       return {
@@ -41,7 +42,7 @@ const MainForm = () => {
         activeTask: newTask,
         currentCycle: nextCycle,
         secondsRemaining,
-        formattedSecondsRemaining: formattedMinutes,
+        formattedSecondsRemaining: secondsToMinutes(secondsRemaining),
         tasks: [...prev.tasks, newTask],
         config: { ...prev.config },
       };
