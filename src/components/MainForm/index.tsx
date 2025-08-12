@@ -4,6 +4,7 @@ import { useTaskContext } from "../../context/TaskContext/useTaskContext";
 import type { TaskModel } from "../../models/TaskModel";
 import { getNextCycle } from "../../utils/getNextCycle";
 import { getNextCycleType } from "../../utils/getNextCycleType";
+import { secondsToMinutes } from "../../utils/secondsToMinutes";
 
 const MainForm = () => {
   const taskNameInput = useRef<HTMLInputElement>(null);
@@ -32,6 +33,7 @@ const MainForm = () => {
     };
 
     const secondsRemaining = newTask.duration * 60;
+    const formattedMinutes = secondsToMinutes(secondsRemaining);
 
     setState((prev) => {
       return {
@@ -39,7 +41,7 @@ const MainForm = () => {
         activeTask: newTask,
         currentCycle: nextCycle,
         secondsRemaining,
-        formattedSecondsRemaining: "00:00",
+        formattedSecondsRemaining: formattedMinutes,
         tasks: [...prev.tasks, newTask],
         config: { ...prev.config },
       };
