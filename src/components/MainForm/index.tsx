@@ -59,6 +59,7 @@ const MainForm = () => {
           labelText="task"
           placeholder="Digite a tarefa"
           ref={taskNameInput}
+          disabled={state.activeTask ? true : false}
         />
       </div>
       <div className="formRow">
