@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 
 type ButtonProps = {
-  color: string;
+  color: "green" | "red";
   icon: React.ReactNode;
 } & React.ComponentProps<"button">;
 const Button = ({ color, icon, ...rest }: ButtonProps) => {
