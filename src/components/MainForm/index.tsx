@@ -4,15 +4,15 @@ import { useTaskContext } from "../../context/TaskContext/useTaskContext";
 import type { TaskModel } from "../../models/TaskModel";
 import { getNextCycle } from "../../utils/getNextCycle";
 import { getNextCycleType } from "../../utils/getNextCycleType";
-import { secondsToMinutes } from "../../utils/secondsToMinutes";
 import Cycles from "../Cycles";
 import Button from "../Button";
 import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
+import { TaskActionTypes } from "../../context/TaskContext/taskActions";
 
 const MainForm = () => {
   const taskNameInput = useRef<HTMLInputElement>(null);
 
-  const { setState, state } = useTaskContext();
+  const { dispatch, state } = useTaskContext();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,30 +37,11 @@ const MainForm = () => {
       type: nextCycleType,
     };
 
-    const secondsRemaining = newTask.duration * 60;
-
-    setState((prev) => {
-      return {
-        ...prev,
-        activeTask: newTask,
-        currentCycle: nextCycle,
-        secondsRemaining,
-        formattedSecondsRemaining: secondsToMinutes(secondsRemaining),
-        tasks: [...prev.tasks, newTask],
-        config: { ...prev.config },
-      };
-    });
+    dispatch({ type: TaskActionTypes.START_TASK, payload: newTask });
   };
 
   const handleInterruptTask = () => {
-    setState((prev) => {
-      return {
-        ...prev,
-        activeTask: null,
-        secondsRemaining: 0,
-        formattedSecondsRemaining: "00:00",
-      };
-    });
+    dispatch({ type: TaskActionTypes.INTERRUPT_TASK });
   };
 
   return (
@@ -80,7 +61,7 @@ const MainForm = () => {
           Nesse ciclo <strong>foque</strong>por <strong>25 min.</strong>
         </span>
       </div>
-      <div className="formRow">{state.activeTask && <Cycles />}</div>
+      <div className="formRow">{state.currentCycle > 0 && <Cycles />}</div>
       <div className="formRow">
         {!state.activeTask ? (
           <Button
