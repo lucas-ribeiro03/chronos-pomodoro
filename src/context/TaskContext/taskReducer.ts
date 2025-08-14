@@ -7,6 +7,7 @@ export const taskReducer = (
 ): TaskStateModel => {
   switch (action.type) {
     case TaskActionTypes.START_TASK: {
+      const newTask = action.payload;
       return state;
     }
     case TaskActionTypes.INTERRUPT_TASK: {
