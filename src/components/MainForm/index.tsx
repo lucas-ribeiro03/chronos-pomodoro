@@ -8,6 +8,7 @@ import Cycles from "../Cycles";
 import Button from "../Button";
 import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
 import { TaskActionTypes } from "../../context/TaskContext/taskActions";
+import Tips from "../Tips";
 
 const MainForm = () => {
   const taskNameInput = useRef<HTMLInputElement>(null);
@@ -58,7 +59,7 @@ const MainForm = () => {
       </div>
       <div className="formRow">
         <span>
-          Nesse ciclo <strong>foque</strong>por <strong>25 min.</strong>
+          <Tips />
         </span>
       </div>
       <div className="formRow">{state.currentCycle > 0 && <Cycles />}</div>
