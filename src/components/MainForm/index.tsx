@@ -16,6 +16,8 @@ const MainForm = () => {
 
   const { dispatch, state } = useTaskContext();
 
+  const lastTaskName = state.tasks[state.tasks.length - 1]?.name || "";
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -56,6 +58,7 @@ const MainForm = () => {
           placeholder="Digite a tarefa"
           ref={taskNameInput}
           disabled={state.activeTask ? true : false}
+          defaultValue={lastTaskName}
         />
       </div>
       <div className="formRow">
