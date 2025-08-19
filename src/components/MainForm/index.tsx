@@ -21,8 +21,6 @@ const MainForm = () => {
     const nextCycle = getNextCycle(state.currentCycle);
     const nextCycleType = getNextCycleType(nextCycle);
 
-    console.log(nextCycle);
-
     if (!taskNameInput.current) return alert("Insira uma tarefa");
     const taskName = taskNameInput.current.value.trim();
 
