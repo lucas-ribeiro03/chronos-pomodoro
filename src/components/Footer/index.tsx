@@ -1,15 +1,15 @@
 import styles from "./styles.module.css";
+import { RouterLink } from "../Link";
 
-const Footer = () => {
+export function Footer() {
   return (
     <footer className={styles.footer}>
-      {
-        <p>
-          Chronos Pomodoro &copy; {new Date().getFullYear()} - Lucas Ribeiro
-        </p>
-      }
+      <RouterLink href="/about-pomodoro/">
+        Entenda como funciona a técnica pomodoro
+      </RouterLink>
+      <RouterLink href="/">
+        Chronos Pomodoro &copy; {new Date().getFullYear()} - Feito com 💚
+      </RouterLink>
     </footer>
   );
-};
-
-export default Footer;
+}
