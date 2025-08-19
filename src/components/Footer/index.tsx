@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
-import { RouterLink } from "../Link";
+import { RouterLink } from "../Link/index";
 
-export function Footer() {
+const Footer = () => {
   return (
     <footer className={styles.footer}>
       <RouterLink href="/about-pomodoro/">
@@ -12,4 +12,6 @@ export function Footer() {
       </RouterLink>
     </footer>
   );
-}
+};
+
+export default Footer;
