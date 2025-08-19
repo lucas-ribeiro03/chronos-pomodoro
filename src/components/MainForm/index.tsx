@@ -9,6 +9,7 @@ import Button from "../Button";
 import { PlayCircleIcon, StopCircleIcon } from "lucide-react";
 import { TaskActionTypes } from "../../context/TaskContext/taskActions";
 import Tips from "../Tips";
+import { showMessage } from "../../adapters/showMessage";
 
 const MainForm = () => {
   const taskNameInput = useRef<HTMLInputElement>(null);
@@ -21,10 +22,10 @@ const MainForm = () => {
     const nextCycle = getNextCycle(state.currentCycle);
     const nextCycleType = getNextCycleType(nextCycle);
 
-    if (!taskNameInput.current) return alert("Insira uma tarefa");
+    if (!taskNameInput.current) return showMessage.warning("Insira uma tarefa");
     const taskName = taskNameInput.current.value.trim();
 
-    if (!taskName) return alert("Insira uma tarefa");
+    if (!taskName) return showMessage.warning("Insira uma tarefa");
 
     const newTask: TaskModel = {
       id: Date.now().toString(),
@@ -37,10 +38,12 @@ const MainForm = () => {
     };
 
     dispatch({ type: TaskActionTypes.START_TASK, payload: newTask });
+    showMessage.success("Tarefa iniciada");
   };
 
   const handleInterruptTask = () => {
     dispatch({ type: TaskActionTypes.INTERRUPT_TASK });
+    showMessage.error("Tarefa interrompida!");
   };
 
   return (
