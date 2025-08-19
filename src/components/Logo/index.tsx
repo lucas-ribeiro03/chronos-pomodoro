@@ -8,7 +8,7 @@ const Logo = () => {
       <RouterLink href="" className={styles.logoLink}>
         <TimerIcon />
         <span>Chronos</span>
-      </Routerlink>
+      </RouterLink>
     </div>
   );
 };
