@@ -32,10 +32,10 @@ const Menu = () => {
 
   return (
     <nav className={styles.menu}>
-      <RouterLink href="" className={styles.menuLink}>
+      <RouterLink href="/" className={styles.menuLink}>
         <HouseIcon />
       </RouterLink>
-      <RouterLink href="" className={styles.menuLink}>
+      <RouterLink href="/history" className={styles.menuLink}>
         <HistoryIcon />
       </RouterLink>
       <RouterLink href="" className={styles.menuLink}>

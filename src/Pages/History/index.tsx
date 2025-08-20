@@ -2,8 +2,9 @@ import MainTemplate from "../../templates/MainTemplates";
 import Container from "../../components/Container";
 
 import styles from "./styles.module.css";
-import { Heading, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import Button from "../../components/Button";
+import Heading from "../../components/Heading";
 
 const History = () => {
   return (
@@ -13,7 +14,7 @@ const History = () => {
           <Heading>
             <span>History</span>
             <span>
-              <Button color="red" icon={<TrashIcon />} />
+              <Button icon={<TrashIcon />} />
             </span>
           </Heading>
         </Container>
