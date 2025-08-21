@@ -8,12 +8,14 @@ import Heading from "../../components/Heading";
 import { useTaskContext } from "../../context/TaskContext/useTaskContext";
 import { formatDate } from "../../utils/formatDate";
 import { getTaskStatus } from "../../utils/getTaskStatus";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { sortTasks, type SortTasksOptions } from "../../utils/sortTasks";
 import { TaskActionTypes } from "../../context/TaskContext/taskActions";
+import { showMessage } from "../../adapters/showMessage";
 
 const History = () => {
   const { state, dispatch } = useTaskContext();
+  const [confirmClearHistory, setConfirmClearHistory] = useState(false);
   const [sortTaskOptions, setSortTaskOptions] = useState<SortTasksOptions>(
     () => {
       return {
@@ -30,6 +32,8 @@ const History = () => {
     longBreakTime: "Descanso Longo",
   };
 
+  const hasTasks = state.tasks.length > 0;
+
   const handleSortTasks = ({ field }: Pick<SortTasksOptions, "field">) => {
     const newDirection = sortTaskOptions.direction === "desc" ? "asc" : "desc";
 
@@ -45,9 +49,36 @@ const History = () => {
   };
 
   const handleResetHistory = () => {
-    if (!confirm("Tem certeza?")) return;
-    dispatch({ type: TaskActionTypes.RESET_TASK });
+    showMessage.dismiss();
+    showMessage.confirm("Deseja mesmo apagar o histórico?", (confirmation) => {
+      setConfirmClearHistory(confirmation);
+    });
   };
+
+  useEffect(() => {
+    setSortTaskOptions((prevState) => {
+      return {
+        ...prevState,
+        tasks: sortTasks({
+          tasks: state.tasks,
+          direction: prevState.direction,
+          field: prevState.field,
+        }),
+      };
+    });
+  }, [state.tasks]);
+
+  useEffect(() => {
+    if (!confirmClearHistory) return;
+    dispatch({ type: TaskActionTypes.RESET_TASK });
+    setConfirmClearHistory(false);
+  }, [confirmClearHistory, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      showMessage.dismiss();
+    };
+  }, []);
 
   return (
     <>
@@ -55,61 +86,71 @@ const History = () => {
         <Container>
           <Heading>
             <span>History</span>
-            <span className={styles.buttonContainer}>
-              <Button
-                onClick={handleResetHistory}
-                aria-label="Apagar todo o histórico"
-                title="Apagar histórico"
-                color="red"
-                icon={<TrashIcon />}
-              />
-            </span>
+            {hasTasks && (
+              <span className={styles.buttonContainer}>
+                <Button
+                  onClick={handleResetHistory}
+                  aria-label="Apagar todo o histórico"
+                  title="Apagar histórico"
+                  color="red"
+                  icon={<TrashIcon />}
+                />
+              </span>
+            )}
           </Heading>
         </Container>
         <Container>
-          <div className={styles.responsiveTable}>
-            <table>
-              <thead>
-                <tr>
-                  <th
-                    className={styles.thSort}
-                    onClick={() => handleSortTasks({ field: "name" })}
-                  >
-                    Tarefa
-                  </th>
-                  <th
-                    className={styles.thSort}
-                    onClick={() => handleSortTasks({ field: "duration" })}
-                  >
-                    Duração
-                  </th>
-                  <th
-                    className={styles.thSort}
-                    onClick={() => handleSortTasks({ field: "startDate" })}
-                  >
-                    Data
-                  </th>
-                  <th>Status</th>
-                  <th>Tipo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortTaskOptions.tasks.map((task) => {
-                  return (
-                    <tr>
-                      <td>{task.name}</td>
-                      <td>{task.duration} min</td>
-                      <td>{formatDate(task.startDate)}</td>
-                      <td>
-                        {getTaskStatus(task, state.activeTask ?? undefined)}
-                      </td>
-                      <td>{taskType[task.type]}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          {hasTasks && (
+            <div className={styles.responsiveTable}>
+              <table>
+                <thead>
+                  <tr>
+                    <th
+                      className={styles.thSort}
+                      onClick={() => handleSortTasks({ field: "name" })}
+                    >
+                      Tarefa
+                    </th>
+                    <th
+                      className={styles.thSort}
+                      onClick={() => handleSortTasks({ field: "duration" })}
+                    >
+                      Duração
+                    </th>
+                    <th
+                      className={styles.thSort}
+                      onClick={() => handleSortTasks({ field: "startDate" })}
+                    >
+                      Data
+                    </th>
+                    <th>Status</th>
+                    <th>Tipo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortTaskOptions.tasks.map((task) => {
+                    return (
+                      <tr>
+                        <td>{task.name}</td>
+                        <td>{task.duration} min</td>
+                        <td>{formatDate(task.startDate)}</td>
+                        <td>
+                          {getTaskStatus(task, state.activeTask ?? undefined)}
+                        </td>
+                        <td>{taskType[task.type]}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {!hasTasks && (
+            <p style={{ textAlign: "center", fontWeight: "bold" }}>
+              Ainda não há tarefas
+            </p>
+          )}
         </Container>
       </MainTemplate>
     </>
