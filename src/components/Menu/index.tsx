@@ -38,7 +38,7 @@ const Menu = () => {
       <RouterLink href="/history" className={styles.menuLink}>
         <HistoryIcon />
       </RouterLink>
-      <RouterLink href="" className={styles.menuLink}>
+      <RouterLink href="/settings" className={styles.menuLink}>
         <SettingsIcon />
       </RouterLink>
       <RouterLink
