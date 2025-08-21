@@ -7,13 +7,14 @@ import { SaveIcon } from "lucide-react";
 import { useRef } from "react";
 import { useTaskContext } from "../../context/TaskContext/useTaskContext";
 import { showMessage } from "../../adapters/showMessage";
+import { TaskActionTypes } from "../../context/TaskContext/taskActions";
 
 const Settings = () => {
   const workTimeInput = useRef<HTMLInputElement>(null);
   const shortBreakTimeInput = useRef<HTMLInputElement>(null);
   const longBreakTimeInput = useRef<HTMLInputElement>(null);
 
-  const { state } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,8 +37,9 @@ const Settings = () => {
       shortBreakTime > 60 ||
       shortBreakTime < 1 ||
       shortBreakTime > 60
-    )
+    ) {
       formErrors.push("O tempo máximo para cada ciclo é de apenas 60 minutos");
+    }
 
     if (formErrors.length > 0) {
       return formErrors.forEach((error) => {
@@ -45,7 +47,19 @@ const Settings = () => {
       });
     }
 
-    console.log("salvar");
+    if (
+      workTime === state.config.workTime &&
+      shortBreakTime === state.config.shortBreakTime &&
+      longBreakTime === state.config.longBreakTime
+    ) {
+      return;
+    }
+
+    dispatch({
+      type: TaskActionTypes.CHANGE_SETTINGS,
+      payload: { workTime, longBreakTime, shortBreakTime },
+    });
+    showMessage.success("Configurações salvas");
   };
 
   return (
