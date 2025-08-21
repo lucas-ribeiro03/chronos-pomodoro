@@ -10,9 +10,10 @@ import { formatDate } from "../../utils/formatDate";
 import { getTaskStatus } from "../../utils/getTaskStatus";
 import { useState } from "react";
 import { sortTasks, type SortTasksOptions } from "../../utils/sortTasks";
+import { TaskActionTypes } from "../../context/TaskContext/taskActions";
 
 const History = () => {
-  const { state } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
   const [sortTaskOptions, setSortTaskOptions] = useState<SortTasksOptions>(
     () => {
       return {
@@ -43,6 +44,11 @@ const History = () => {
     });
   };
 
+  const handleResetHistory = () => {
+    if (!confirm("Tem certeza?")) return;
+    dispatch({ type: TaskActionTypes.RESET_TASK });
+  };
+
   return (
     <>
       <MainTemplate>
@@ -51,6 +57,7 @@ const History = () => {
             <span>History</span>
             <span className={styles.buttonContainer}>
               <Button
+                onClick={handleResetHistory}
                 aria-label="Apagar todo o histórico"
                 title="Apagar histórico"
                 color="red"
